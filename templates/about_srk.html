@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<div id="about" class="about-area area-padding">
+  <br>
+  <br>
+  <br>
+  <div class="col-md-6">
+    {% if session.logged_in%}
+      <a href="/edit_aboutsrk/" class="btn btn-dark btn-raised btn-lg">
+        <i class="fa fa-edit"></i> Edit This Page Data
+      </a>
+    {% endif %}
+  </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="section-headline text-center">
+              <h2>About Dr. Sarvepalli Radhakrishnan</h2>
+              <p>
+                <br>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <p></p>
+          <p></p>
+          <p></p>
+        </div>
+        <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="well-middle">
+              <div class="single-well jumbotron">
+                <h3 class="section-headline text-center text-dark">{{data.title}}</h3>
+                <p class="sec-head text-justify text-dark">
+                  {{data.aboutsrk | safe}}
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- End col-->
+        </div>
+      </div>
+    </div><!-- End About Section -->
+
+{% endblock content %}

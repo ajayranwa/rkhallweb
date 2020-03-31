@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+  <br>
+  <br>
+  <br>
+  <div>
+    <div class="container col-md-6">
+      <h3 class="font-weight-bold">Edit data of {{hcm_data.post}}</h3>
+        {% from "includes/_formhelpers.html" import render_field %}
+        <form method="POST" action="">
+          <div class="form-group">
+            {{ render_field(form.hcm_post, class_="form-control") }}
+          </div>
+          <div class="form-group">
+            {{ render_field(form.name, class_="form-control", id="editor") }}
+          </div>
+          <div class="form-group">
+            {{ render_field(form.mobile, class_="form-control") }}
+          </div>
+          <div class="form-group">
+            {{ render_field(form.profilephoto, class_="form-control") }}
+          </div>
+          <div class="form-group">
+            {{ render_field(form.email, class_="form-control") }}
+          </div>
+          <div class="form-group">
+            {{ render_field(form.fbprofile, class_="form-control") }}
+          </div>
+          <div class="form-group">
+            {{ render_field(form.inprofile, class_="form-control") }}
+          </div>
+          <p><input class="btn btn-primary" type="submit" value="Submit">
+        </form>
+    </div>
+  </div>
+{% endblock content %}
