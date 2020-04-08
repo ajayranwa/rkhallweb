@@ -1,15 +1,17 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="page-header header-filter" data-parallax="true" style="background-image: url({{ url_for('static', filename='assets/images/rk_main2.jpg') }})">
+<div class="page-header header-filter" data-parallax="true" style="background-image: url({{page_data.backgroungimage | safe}})">
   <div class="container">
     <div class="row">
       <div class="col-md-10">
         <h1 class="title">{{page_data.title}}</</h1>
         <br>
-        <a href="https://www.youtube.com/watch?v=8nq0zQfj5pc" target="_blank" class="btn btn-danger btn-raised btn-lg">
-          <i class="fa fa-play"></i> {{page_data.videobuttontext}}
-        </a>
+        {% if page_data.videolink != '' %}
+          <a href="{{page_data.videolink | safe}}" target="_blank" class="btn btn-danger btn-raised btn-lg">
+            <i class="fa fa-play"></i> {{page_data.videobuttontext}}
+          </a>
+        {% endif %}
         {% if session.logged_in%}
           <a href="/edit_page/{{page_data.id}}" class="btn btn-white btn-raised btn-lg">
             <i class="fa fa-edit"></i> Edit This Page Data
@@ -22,14 +24,98 @@
 <div class="main main-raised">
   <div class="container">
     <div class="section text-center">
+      <div id="nav-tabs">
+        <h2 class="title">{{page_data.title}}</h2>
+        <br>
+        <div class="row">
+          <div class="col-md-4">
+            <!-- Tabs with icons on Card -->
+            <div class="card card-nav-tabs">
+              <div class="card-header">
+                <!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->
+                <div >
+                  <div>
+                    <h6 class="text-center"> <b>Sports & Games </b></h6>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body ">
+                <div class="tab-content text-center">
+                  <div class="tab-pane active" id="profile">
+                    <ul class="list-group text-left">
+                        {% for subhead in subhead_data if subhead.head=='Sports & Games' %}
+                          <li class="list-group-item"><a class="nav-link font-weight-bold text-dark" href="#{{subhead.subhead}}" data-toggle="modal">{{subhead.subhead}}</span></a> </li>
+                        {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End Tabs with icons on Card -->
+          </div>
+          <div class="col-md-4">
+            <!-- Tabs with icons on Card -->
+            <div class="card card-nav-tabs">
+              <div class="card-header">
+                <!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->
+                <div >
+                  <div>
+                    <h6 class="text-center"> <b>Social & Cultural </b></h6>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body ">
+                <div class="tab-content text-center">
+                  <div class="tab-pane active row" id="profile">
+                    <ul class="list-group text-left">
+                        {% for subhead in subhead_data if subhead.head=='Social & Cultural' %}
+                          <li class="list-group-item"><a class="nav-link font-weight-bold text-dark" href="#{{subhead.subhead}}" data-toggle="modal">{{subhead.subhead}}</span></a> </li>
+                        {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End Tabs with icons on Card -->
+          </div>
+          <div class="col-md-4">
+            <!-- Tabs with icons on Card -->
+            <div class="card card-nav-tabs">
+              <div class="card-header">
+                <!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->
+                <div >
+                  <div>
+                    <h6 class="text-center"> <b>Technology</b></h6>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body ">
+                <div class="tab-content text-center">
+                  <div class="tab-pane active" id="profile">
+                    <ul class="list-group text-left">
+                        {% for subhead in subhead_data if subhead.head=='Technology' %}
+                          <li class="list-group-item"><a class="nav-link font-weight-bold text-dark" href="#{{subhead.subhead}}" data-toggle="modal">{{subhead.subhead}}</span></a> </li>
+                        {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section text-center">
       <div class="row">
         <div class="col-md-12 ml-auto mr-auto">
-          <h2 class="title">General Championship Sports & Games</h2>
+          <h2 class="title">GALLERY GENERAL CHAMPIONSHIP</h2>
+          <br>
+            <!-- Carousel Card -->
           <div class="card card-raised card-carousel">
             <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="3000"> 
               {% set num = [0] %}
               <ol class="carousel-indicators">
-                {% for photo in photos if photo.category == 'SPORTS & GAMES'%}  
+                {% for photo in photos %}  
                   {% if num[0] == 0 %}
                     <li data-target="#carouselExampleIndicators" data-slide-to="{{num[0]}}" class="active"></li>
                   {% else %}
@@ -40,7 +126,7 @@
               </ol>
               <div class="carousel-inner">
                 {% set count = [1] %}
-                {% for photo in photos if photo.category == 'SPORTS & GAMES' %}  
+                {% for photo in photos %}  
                   {% if count[0] == 1 %}
                     <div class="carousel-item active">
                       <img class="d-block w-100" src="{{photo.photolink}}" alt="{{photo.photolink}}" style="max-height: 700px ">
@@ -49,9 +135,15 @@
                           <i class="material-icons">location_on</i>
                           RK Hall, IIT Kharagpur
                         </h4>
-                        <h4>
-                          {{photo.category}} {{photo.year}} : {{photo.title}}
-                        </h4>
+                        {% if photo.category != 'OTHER' %}
+                          <h4>
+                            {{photo.category}} {{photo.year}} : {{photo.title}}
+                          </h4>
+                        {% else %}
+                          <h4>
+                            {{photo.title}}
+                          </h4>
+                        {% endif %}
                         {% if session.logged_in %}
                           <a href="/delete_photo_{{photo.id}}" class="btn btn-link btn-just-icon" rel="tooltip" data-placement="bottom" data-original-title="Delete Photo"><span class="material-icons">delete_outline</span></a>
                         {% endif %}
@@ -65,9 +157,15 @@
                           <i class="material-icons">location_on</i>
                           RK Hall, IIT Kharagpur
                         </h4>
-                        <h4>
-                          {{photo.category}} {{photo.year}} : {{photo.title}}
-                        </h4>
+                        {% if photo.category != 'OTHER' %}
+                          <h4>
+                            {{photo.category}} {{photo.year}} : {{photo.title}}
+                          </h4>
+                        {% else %}
+                          <h4>
+                            {{photo.title}}
+                          </h4>
+                        {% endif %}
                         {% if session.logged_in %}
                           <a href="/delete_photo_{{photo.id}}" class="btn btn-link btn-just-icon" rel="tooltip" data-placement="bottom" data-original-title="Delete Photo"><span class="material-icons">delete_outline</span></a>
                         {% endif %}
@@ -87,141 +185,69 @@
               </a>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
 
-          <br><br><br><br>
-          <h2 class="title">General Championship Social & Cultural</h2>
-          <div class="card card-raised card-carousel">
-            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="3000"> 
-              {% set num = [0] %}
-              <ol class="carousel-indicators">
-                {% for photo in photos if photo.category == 'SOCIAL & CULTURAL'%}  
-                  {% if num[0] == 0 %}
-                    <li data-target="#carouselExampleIndicators" data-slide-to="{{num[0]}}" class="active"></li>
-                  {% else %}
-                    <li data-target="#carouselExampleIndicators" data-slide-to="{{num[0]}}"></li>
+  </div>
+</div>
+{% for subhead in subhead_data %}
+<div class="modal fade" id="{{subhead.subhead}}" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header center">
+          <h4 class="text-strong"> <b>{{subhead.subhead}}</b></h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <i class="material-icons">clear</i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <table class="table">
+            <thead>
+              <tr>
+                  <th scope="col">Event</th>
+                  <th scope="col">Captain(s)</th>
+                  <th scope="col">V-Captain(s)</th>
+                  {% if session.logged_in %}
+                    <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
                   {% endif %}
-                  {% if num.append(num.pop() + 1) %}{% endif %} {# increment num by 1 #}
-                {% endfor %}
-              </ol>
-              <div class="carousel-inner">
-                {% set count = [1] %}
-                {% for photo in photos if photo.category == 'SOCIAL & CULTURALS' %}  
-                  {% if count[0] == 1 %}
-                    <div class="carousel-item active">
-                      <img class="d-block w-100" src="{{photo.photolink}}" alt="{{photo.photolink}}" style="max-height: 700px ">
-                      <div class="carousel-caption d-none d-md-block">
-                        <h4>
-                          <i class="material-icons">location_on</i>
-                          RK Hall, IIT Kharagpur
-                        </h4>
-                        <h4>
-                          {{photo.category}} {{photo.year}} : {{photo.title}}
-                        </h4>
-                        {% if session.logged_in %}
-                          <a href="/delete_photo_{{photo.id}}" class="btn btn-link btn-just-icon" rel="tooltip" data-placement="bottom" data-original-title="Delete Photo"><span class="material-icons">delete_outline</span></a>
-                        {% endif %}
-                      </div>
-                    </div>
-                  {% else %}
-                    <div class="carousel-item">
-                      <img class="d-block w-100" src="{{photo.photolink}}" alt="{{photo.photolink}}" style="max-height: 700px ">
-                      <div class="carousel-caption d-none d-md-block">
-                        <h4>
-                          <i class="material-icons">location_on</i>
-                          RK Hall, IIT Kharagpur
-                        </h4>
-                        <h4>
-                          {{photo.category}} {{photo.year}} : {{photo.title}}
-                        </h4>
-                        {% if session.logged_in %}
-                          <a href="/delete_photo_{{photo.id}}" class="btn btn-link btn-just-icon" rel="tooltip" data-placement="bottom" data-original-title="Delete Photo"><span class="material-icons">delete_outline</span></a>
-                        {% endif %}
-                      </div>
-                    </div>
-                  {% endif %}
-                  {% if count.append(count.pop() + 1) %}{% endif %} {# increment count by 1 #}
-                {% endfor %}
-              </div>
-              <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                <i class="material-icons">keyboard_arrow_left</i>
-                <span class="sr-only">Previous</span>
-              </a>
-              <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                <i class="material-icons">keyboard_arrow_right</i>
-                <span class="sr-only">Next</span>
-              </a>
-            </div>
-          </div>
+              </tr>
+            </thead>
 
-          <br><br><br><br>
-          <h2 class="title">General Championship Technology</h2>
-          <div class="card card-raised card-carousel">
-            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="3000"> 
-              {% set num = [0] %}
-              <ol class="carousel-indicators">
-                {% for photo in photos if photo.category == 'TECHNOLOGY' %}  
-                  {% if num[0] == 0 %}
-                    <li data-target="#carouselExampleIndicators" data-slide-to="{{num[0]}}" class="active"></li>
-                  {% else %}
-                    <li data-target="#carouselExampleIndicators" data-slide-to="{{num[0]}}"></li>
+            <tbody>
+            {% for captDetails in gc_data if captDetails.subhead == subhead.subhead %}
+              <tr>
+                <td scope="row">{{captDetails.event}}</td>
+                <td>{{captDetails.captain}}</td>
+                <td>{{captDetails.vcaptain}}</td>
+                {% if session.logged_in %}
+                    <td scope="col"><a href="/edit_gc_event_{{captDetails['id']}}" class="btn btn-link btn-just-icon"><span class="material-icons">edit</span></a></td>
+                    <td scope="col"><a href="/delete_gc_event_{{captDetails['id']}}" class="btn btn-link btn-just-icon"><span class="material-icons">delete_outline</span></a></td>
                   {% endif %}
-                  {% if num.append(num.pop() + 1) %}{% endif %} {# increment num by 1 #}
-                {% endfor %}
-              </ol>
-              <div class="carousel-inner">
-                {% set count = [1] %}
-                {% for photo in photos if photo.category == 'TECHNOLOGY' %}  
-                  {% if count[0] == 1 %}
-                    <div class="carousel-item active">
-                      <img class="d-block w-100" src="{{photo.photolink}}" alt="{{photo.photolink}}" style="max-height: 700px ">
-                      <div class="carousel-caption d-none d-md-block">
-                        <h4>
-                          <i class="material-icons">location_on</i>
-                          RK Hall, IIT Kharagpur
-                        </h4>
-                        <h4>
-                          {{photo.category}} {{photo.year}} : {{photo.title}}
-                        </h4>
-                        {% if session.logged_in %}
-                          <a href="/delete_photo_{{photo.id}}" class="btn btn-link btn-just-icon" rel="tooltip" data-placement="bottom" data-original-title="Delete Photo"><span class="material-icons">delete_outline</span></a>
-                        {% endif %}
-                      </div>
-                    </div>
-                  {% else %}
-                    <div class="carousel-item">
-                      <img class="d-block w-100" src="{{photo.photolink}}" alt="{{photo.photolink}}" style="max-height: 700px ">
-                      <div class="carousel-caption d-none d-md-block">
-                        <h4>
-                          <i class="material-icons">location_on</i>
-                          RK Hall, IIT Kharagpur
-                        </h4>
-                        <h4>
-                          {{photo.category}} {{photo.year}} : {{photo.title}}
-                        </h4>
-                        {% if session.logged_in %}
-                          <a href="/delete_photo_{{photo.id}}" class="btn btn-link btn-just-icon" rel="tooltip" data-placement="bottom" data-original-title="Delete Photo"><span class="material-icons">delete_outline</span></a>
-                        {% endif %}
-                      </div>
-                    </div>
-                  {% endif %}
-                  {% if count.append(count.pop() + 1) %}{% endif %} {# increment count by 1 #}
-                {% endfor %}
-              </div>
-              <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                <i class="material-icons">keyboard_arrow_left</i>
-                <span class="sr-only">Previous</span>
-              </a>
-              <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                <i class="material-icons">keyboard_arrow_right</i>
-                <span class="sr-only">Next</span>
-              </a>
-            </div>
-          </div>
-
+              </tr>
+            {% endfor %}  
+            </tbody>
+          </table>
+          <h4 class="text-strong"> <b>Last Year Standing</b></h4>
+          <table class="table">
+            <tbody>
+            {% for captDetails in gc_data if captDetails.subhead == subhead.subhead and captDetails.laststanding != 'None' %}
+              <tr>
+                <td scope="row">{{captDetails.event}}</td>
+                <td>{{captDetails.laststanding}}</td>
+              </tr>
+            {% endfor %}  
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger btn-link" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
   </div>
-</div>
+{% endfor %}
+
 
 {% endblock content %}

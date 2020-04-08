@@ -11,7 +11,7 @@
           <span class="navbar-toggler-icon"></span>
         </button>
       </div>
-      <div class="collapse navbar-collapse" id="navbarText">
+      <div class="collapse navbar-collapse">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
             <a class="nav-link font-weight-bold" href="/illu">Illu</span></a>
@@ -22,9 +22,6 @@
           <li class="nav-item">
             <a class="nav-link font-weight-bold" href="/gc">GC</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link font-weight-bold" href="/gallery">Gallery</a>
-          </li>
         </ul>
       </div>
       <div class="collapse navbar-collapse">
@@ -34,20 +31,16 @@
               Hall Council
             </a>
           </li>
-          <li class="nav-item">
-            <a href="/captains_secretaries" class="nav-link active font-weight-bold">
-              captains
-            </a>
-          </li>
           {% if session.logged_in %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle font-weight-bold" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Add Data
+              Add
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <a class="dropdown-item" href="/add_hallcouncil">Hall Council</a>
-              <a class="dropdown-item" href="/add_captains_secretaries/">Captains, Secretaries & Coordinators</a>
-              <a class="dropdown-item" href="/add_photos/">Gallery Photos</a>
+              <a class="dropdown-item" href="/add_captains_secretaries/">Secretaries & Coordinators</a>
+              <a class="dropdown-item" href="/add_photos/">Photos</a>
+              <a class="dropdown-item" href="/add_gc_event/">GC Event</a>
             </div>
           </li>
           <li class="nav-item">
