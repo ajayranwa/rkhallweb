@@ -24,7 +24,7 @@ app.secret_key = 'AjaySuperJosaa@2016KgpRKjvhvhv ghjvgv hvj'
 # mysql = MySQL(cursorclass=DictCursor)
 # mysql.init_app(app)
 
-conn = psycopg2.connect(host="ec2-34-234-228-127.compute-1.amazonaws.com", port="5432", user="dtqufuqcrdufjm", password="da12df8d94ff1a397c9122d049305b6a45967bec553c32f16466fdf6bbe9f89c", database="dapmmh4qk7ihei", sslmode="require")
+conn = psycopg2.connect(host="m", port="", user="", password="", database="", sslmode="")
 conn.autocommit = True
 
 
