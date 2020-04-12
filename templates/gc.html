@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="page-header header-filter" data-parallax="true" style="background-image: url({{page_data.backgroungimage | safe}})">
+<div class="page-header header-filter" data-parallax="true" style="background-image: url({{ url_for('static', filename='assets/images/gc_background.jpg') }}); background-position: top center;">
   <div class="container">
     <div class="row">
       <div class="col-md-10">
@@ -14,7 +14,7 @@
         {% endif %}
         {% if session.logged_in%}
           <a href="/edit_page/{{page_data.id}}" class="btn btn-white btn-raised btn-lg">
-            <i class="fa fa-edit"></i> Edit This Page Data
+            <i class="fa fa-edit"></i> Edit Page
           </a>
         {% endif %}
       </div>
@@ -28,79 +28,81 @@
         <h2 class="title">{{page_data.title}}</h2>
         <br>
         <div class="row">
-          <div class="col-md-4">
-            <!-- Tabs with icons on Card -->
-            <div class="card card-nav-tabs">
-              <div class="card-header">
-                <!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->
-                <div >
-                  <div>
-                    <h6 class="text-center"> <b>Sports & Games </b></h6>
+          <div class="card-deck">
+            <!-- <div class="col-md-4"> -->
+              <!-- Tabs with icons on Card -->
+              <div class="card">
+                <div class="card-header">
+                  <!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->
+                  <div >
+                    <div>
+                      <h6 class="text-center"> <b>Sports & Games </b></h6>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body ">
+                  <div class="tab-content text-center">
+                    <div class="tab-pane active" id="profile">
+                      <ul class="list-group text-left">
+                          {% for subhead in subhead_data if subhead.head=='Sports & Games' %}
+                            <li class="list-group-item"><a class="nav-link font-weight-bold text-dark" href="#{{subhead.subhead}}" data-toggle="modal">{{subhead.subhead}}</span></a> </li>
+                          {% endfor %}
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div class="card-body ">
-                <div class="tab-content text-center">
-                  <div class="tab-pane active" id="profile">
-                    <ul class="list-group text-left">
-                        {% for subhead in subhead_data if subhead.head=='Sports & Games' %}
-                          <li class="list-group-item"><a class="nav-link font-weight-bold text-dark" href="#{{subhead.subhead}}" data-toggle="modal">{{subhead.subhead}}</span></a> </li>
-                        {% endfor %}
-                    </ul>
+              <!-- End Tabs with icons on Card -->
+            <!-- </div> -->
+            <!-- <div class="col-md-4"> -->
+              <!-- Tabs with icons on Card -->
+              <div class="card">
+                <div class="card-header">
+                  <!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->
+                  <div >
+                    <div>
+                      <h6 class="text-center"> <b>Social & Cultural </b></h6>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body ">
+                  <div class="tab-content text-center">
+                    <div class="tab-pane active row" id="profile">
+                      <ul class="list-group text-left">
+                          {% for subhead in subhead_data if subhead.head=='Social & Cultural' %}
+                            <li class="list-group-item"><a class="nav-link font-weight-bold text-dark" href="#{{subhead.subhead}}" data-toggle="modal">{{subhead.subhead}}</span></a> </li>
+                          {% endfor %}
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <!-- End Tabs with icons on Card -->
-          </div>
-          <div class="col-md-4">
-            <!-- Tabs with icons on Card -->
-            <div class="card card-nav-tabs">
-              <div class="card-header">
-                <!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->
-                <div >
-                  <div>
-                    <h6 class="text-center"> <b>Social & Cultural </b></h6>
+              <!-- End Tabs with icons on Card -->
+            <!-- </div> -->
+            <!-- <div class="col-md-4"> -->
+              <!-- Tabs with icons on Card -->
+              <div class="card">
+                <div class="card-header">
+                  <!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->
+                  <div >
+                    <div>
+                      <h6 class="text-center"> <b>Technology</b></h6>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body ">
+                  <div class="tab-content text-center">
+                    <div class="tab-pane active" id="profile">
+                      <ul class="list-group text-left">
+                          {% for subhead in subhead_data if subhead.head=='Technology' %}
+                            <li class="list-group-item"><a class="nav-link font-weight-bold text-dark" href="#{{subhead.subhead}}" data-toggle="modal">{{subhead.subhead}}</span></a> </li>
+                          {% endfor %}
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div class="card-body ">
-                <div class="tab-content text-center">
-                  <div class="tab-pane active row" id="profile">
-                    <ul class="list-group text-left">
-                        {% for subhead in subhead_data if subhead.head=='Social & Cultural' %}
-                          <li class="list-group-item"><a class="nav-link font-weight-bold text-dark" href="#{{subhead.subhead}}" data-toggle="modal">{{subhead.subhead}}</span></a> </li>
-                        {% endfor %}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- End Tabs with icons on Card -->
-          </div>
-          <div class="col-md-4">
-            <!-- Tabs with icons on Card -->
-            <div class="card card-nav-tabs">
-              <div class="card-header">
-                <!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->
-                <div >
-                  <div>
-                    <h6 class="text-center"> <b>Technology</b></h6>
-                  </div>
-                </div>
-              </div>
-              <div class="card-body ">
-                <div class="tab-content text-center">
-                  <div class="tab-pane active" id="profile">
-                    <ul class="list-group text-left">
-                        {% for subhead in subhead_data if subhead.head=='Technology' %}
-                          <li class="list-group-item"><a class="nav-link font-weight-bold text-dark" href="#{{subhead.subhead}}" data-toggle="modal">{{subhead.subhead}}</span></a> </li>
-                        {% endfor %}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <!-- </div> -->
           </div>
         </div>
       </div>
@@ -137,7 +139,11 @@
                         </h4>
                         {% if photo.category != 'OTHER' %}
                           <h4>
+                            {% if photo.title != None %}
                             {{photo.category}} {{photo.year}} : {{photo.title}}
+                            {% else %}
+                            {{photo.category}} {{photo.year}}
+                            {% endif %}
                           </h4>
                         {% else %}
                           <h4>
@@ -159,7 +165,11 @@
                         </h4>
                         {% if photo.category != 'OTHER' %}
                           <h4>
+                            {% if photo.title != None %}
                             {{photo.category}} {{photo.year}} : {{photo.title}}
+                            {% else %}
+                            {{photo.category}} {{photo.year}}
+                            {% endif %}
                           </h4>
                         {% else %}
                           <h4>

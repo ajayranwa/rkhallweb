@@ -1,7 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="page-header header-filter" data-parallax="true" style="background-image: url({{page_data.backgroungimage | safe}})">
+{% if page_data.id == 1 %}
+<div class="page-header header-filter" data-parallax="true" style="background-image: url({{ url_for('static', filename='assets/images/illu.jpg') }}); background-position: top center;">
+{% endif %}
+{% if page_data.id == 2 %}
+<div class="page-header header-filter" data-parallax="true" style="background-image: url({{ url_for('static', filename='assets/images/rangoli2.jpg') }}); background-position: top center;">
+{% endif %}
   <div class="container">
     <div class="row">
       <div class="col-md-10">
@@ -14,7 +19,7 @@
         {% endif %}
         {% if session.logged_in%}
           <a href="/edit_page/{{page_data.id}}" class="btn btn-white btn-raised btn-lg">
-            <i class="fa fa-edit"></i> Edit This Page Data
+            <i class="fa fa-edit"></i> Edit Page
           </a>
         {% endif %}
       </div>
@@ -63,7 +68,11 @@
                         </h4>
                         {% if photo.category != 'OTHER' %}
                           <h4>
+                            {% if photo.title != None %}
                             {{photo.category}} {{photo.year}} : {{photo.title}}
+                            {% else %}
+                            {{photo.category}} {{photo.year}}
+                            {% endif %}
                           </h4>
                         {% else %}
                           <h4>
@@ -85,7 +94,11 @@
                         </h4>
                         {% if photo.category != 'OTHER' %}
                           <h4>
+                            {% if photo.title != 'None' %}
                             {{photo.category}} {{photo.year}} : {{photo.title}}
+                            {% else %}
+                            {{photo.category}} {{photo.year}}
+                            {% endif %}
                           </h4>
                         {% else %}
                           <h4>

@@ -26,22 +26,23 @@
     
     <div class="page-header header-filter" data-parallax="true" style="background-image: url({{ url_for('static', filename='assets/images/rk_main.jpg')}})"></div>
       <div class="main main-raised">
+        {% for hcm in hallcouncil_data if hcm.id == 1%}
         <div class="profile-content">
           <div class="container">
             <div class="row">
               <div class="col-md-4 ml-auto mr-auto">
                 <div class="profile">
                   <div class="avatar">
-                    <img src="{{hallcouncil_data[0]['profilephoto']}}" alt="{{hallcouncil_data[0].name}}'s Image" class="img-raised rounded img-fluid">
+                    <img src="{{hcm['profilephoto']}}" alt="{{hcm.name}}'s Image" class="img-raised rounded img-fluid" style="max-width:180px;height:180px;">
                   </div>
                   <div class="name">
-                    <h3 class="title">{{hallcouncil_data[0]['name']}}</h3>
-                    <h6>{{hallcouncil_data[0]['post']}}</h6>
-                    <a href="{{hallcouncil_data[0]['inprofile']}}" class="btn btn-link btn-just-icon"><i class="fa fa-link"></i></a>
-                    <a href="{{hallcouncil_data[0]['fbprofile']}}" class="btn btn-link btn-just-icon"><i class="fa fa-facebook-square"></i></a>
-                    <a href="mailto:{{hallcouncil_data[0]['email']}}" class="btn btn-link btn-just-icon"><span class="material-icons">alternate_email</span></a>
+                    <h3 class="title">{{hcm['name']}}</h3>
+                    <h6>{{hcm['post']}}</h6>
+                    <a href="{{hcm['inprofile']}}" class="btn btn-link btn-just-icon"><i class="fa fa-link"></i></a>
+                    <a href="{{hcm['fbprofile']}}" class="btn btn-link btn-just-icon"><i class="fa fa-facebook-square"></i></a>
+                    <a href="mailto:{{hcm['email']}}" class="btn btn-link btn-just-icon" rel="tooltip" data-placement="bottom" data-original-title="{{hcm.email}}"><span class="material-icons">alternate_email</span></a>
                     {% if session.logged_in %}
-                      <a href="/edit_hcm_{{hallcouncil_data[0]['id']}}" class="btn btn-link btn-just-icon"><span class="material-icons">edit</span></a>
+                      <a href="/edit_hcm_{{hcm['id']}}" class="btn btn-link btn-just-icon"><span class="material-icons">edit</span></a>
                     {% endif %}
                   </div>
                 </div>
@@ -49,58 +50,114 @@
             </div>
           </div>
         </div>
+        {% endfor %}
+
         <div class="section text-center">
         <div class="team">
           <div class="row">
+            {% for hcm in hallcouncil_data%}
+            {% if hcm.id==3 %}
             <div class="col-md-6">
               <div class="team-player">
                 <div class="card card-plain">
                   <div class="col-md-4 ml-auto mr-auto">
-                    <img src="{{hallcouncil_data[1]['profilephoto']}}" alt="{{hallcouncil_data[1].name}}'s Image" class="img-raised rounded img-fluid" style="max-width:180px;height:180px;">
+                    <img src="{{hcm['profilephoto']}}" alt="{{hcm.name}}'s Image" class="img-raised rounded img-fluid" style="max-width:2000px;height:200px;">
                   </div>
-                  <h4 class="card-title">{{hallcouncil_data[1]['name']}}
+                  <h4 class="card-title">{{hcm['name']}}
                     <br>
-                    <small class="card-description text-muted">{{hallcouncil_data[1]['post']}}</small>
+                    <small class="card-description text-muted">{{hcm['post']}}</small>
                   </h4>
                   <div class="card-footer justify-content-center">
-                    <a href="{{hallcouncil_data[1]['inprofile']}}" class="btn btn-link btn-just-icon" alt="nbvbv"><i class="fa fa-link"></i></a>
-                    <a href="{{hallcouncil_data[1]['fbprofile']}}" class="btn btn-link btn-just-icon"><i class="fa fa-facebook-square"></i></a>
-                    <a href="mailto:{{hallcouncil_data[1]['email']}}" class="btn btn-link btn-just-icon"><span class="material-icons">alternate_email</span></a>
+                    <a href="{{hcm['inprofile']}}" class="btn btn-link btn-just-icon" alt="nbvbv"><i class="fa fa-link"></i></a>
+                    <a href="{{hcm['fbprofile']}}" class="btn btn-link btn-just-icon"><i class="fa fa-facebook-square"></i></a>
+                    <a href="mailto:{{hcm['email']}}" class="btn btn-link btn-just-icon" rel="tooltip" data-placement="bottom" data-original-title="{{hcm.email}}"><span class="material-icons">alternate_email</span></a>
                     {% if session.logged_in %}
-                      <a href="/edit_hcm_{{hallcouncil_data[1]['id']}}" class="btn btn-link btn-just-icon"><span class="material-icons">edit</span></a>
+                      <a href="/edit_hcm_{{hcm['id']}}" class="btn btn-link btn-just-icon"><span class="material-icons">edit</span></a>
                     {% endif %}
                   </div>
                 </div>
               </div>
             </div>
+            {% endif %}
+            {% if hcm.id==2 %}
             <div class="col-md-6">
               <div class="team-player">
                 <div class="card card-plain">
-                  <div class="col-md-4 ml-auto mr-auto">
-                    <img src="{{hallcouncil_data[2]['profilephoto']}}" alt="{{hallcouncil_data[2].name}}'s Image" class="img-raised rounded img-fluid" style="max-width:180px;height:180px;">
+                  <div class="col-md-4 ml-auto mr-auto avatar">
+                    <img src="{{hcm['profilephoto']}}" alt="{{hcm.name}}'s Image" class="img-raised rounded img-fluid" style="max-width:2000px;height:200px;">
                   </div>
-                  <h4 class="card-title">{{hallcouncil_data[2]['name']}}
+                  <h4 class="card-title">{{hcm['name']}}
                     <br>
-                    <small class="card-description text-muted">{{hallcouncil_data[2].post}}</small>
+                    <small class="card-description text-muted">{{hcm['post']}}</small>
                   </h4>
                   <div class="card-footer justify-content-center">
-                    <a href="{{hallcouncil_data[2]['inprofile']}}" class="btn btn-link btn-just-icon"><i class="fa fa-link"></i></a>
-                    <a href="{{hallcouncil_data[2]['fbprofile']}}" class="btn btn-link btn-just-icon"><i class="fa fa-facebook-square"></i></a>
-                    <a href="mailto:{{hallcouncil_data[2]['email']}}" class="btn btn-link btn-just-icon"><span class="material-icons">alternate_email</span></a>
+                    <a href="{{hcm['inprofile']}}" class="btn btn-link btn-just-icon" alt="nbvbv"><i class="fa fa-link"></i></a>
+                    <a href="{{hcm['fbprofile']}}" class="btn btn-link btn-just-icon"><i class="fa fa-facebook-square"></i></a>
+                    <a href="mailto:{{hcm['email']}}" class="btn btn-link btn-just-icon" rel="tooltip" data-placement="bottom" data-original-title="{{hcm.email}}"><span class="material-icons">alternate_email</span></a>
                     {% if session.logged_in %}
-                      <a href="/edit_hcm_{{hallcouncil_data[2]['id']}}" class="btn btn-link btn-just-icon"><span class="material-icons">edit</span></a>
+                      <a href="/edit_hcm_{{hcm['id']}}" class="btn btn-link btn-just-icon"><span class="material-icons">edit</span></a>
                     {% endif %}
                   </div>
                 </div>
               </div>
             </div>
+            {% endif %}
+            {% endfor %}
           </div>
         </div>
         <div class="section text-center">
         <h2 class="title">Hall Council</h2>
         <div class="team">
           <div class="row">
-            {% for hcm in hallcouncil_data if hcm.id > 3%}
+            {% for hcm in hallcouncil_data if hcm.id == 4 %}
+              <div class="col-md-4">
+                <div class="team-player">
+                  <div class="card card-plain">
+                    <div class="col-md-6 ml-auto mr-auto avatar">
+                      <img src="{{hcm['profilephoto']}}" alt="{{hcm.name}}'s Image" class="img-raised rounded img-fluid" style="max-width:200px;height:200px;">
+                    </div>
+                    <h4 class="card-title">{{hcm['name']}}
+                      <br>
+                      <small class="card-description text-muted">{{hcm['post']}}</small>
+                    </h4>
+                    <div class="card-footer justify-content-center">
+                      <a href="{{hcm['inprofile']}}" class="btn btn-link btn-just-icon" rel="tooltip" data-placement="bottom" data-original-title="{{hcm['inprofile']}}"><i class="fa fa-link"></i></a>
+                      <a href="{{hcm['fbprofile']}}" class="btn btn-link btn-just-icon" rel="tooltip" data-placement="bottom" data-original-title="{{hcm['fbprofile']}}"><i class="fa fa-facebook-square"></i></a>
+                      <a href="mailto:{{hcm['email']}}" class="btn btn-link btn-just-icon" rel="tooltip" data-placement="bottom" data-original-title="{{hcm.email}}"><span class="material-icons">alternate_email</span></a>
+                      {% if session.logged_in %}
+                        <a href="/edit_hcm_{{hcm['id']}}" class="btn btn-link btn-just-icon" rel="tooltip" data-placement="bottom" data-original-title="Edit Data"><span class="material-icons">edit</span></a>
+                        <a href="/delete_hcm_{{hcm['id']}}" class="btn btn-link btn-just-icon" rel="tooltip" data-placement="bottom" data-original-title="Delete Data"><span class="material-icons">delete_outline</span></a>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+            {% for hcm in hallcouncil_data if hcm.id == 5 %}
+              <div class="col-md-4">
+                <div class="team-player">
+                  <div class="card card-plain">
+                    <div class="col-md-6 ml-auto mr-auto avatar">
+                      <img src="{{hcm['profilephoto']}}" alt="{{hcm.name}}'s Image" class="img-raised rounded img-fluid" style="max-width:180px;height:180px;">
+                    </div>
+                    <h4 class="card-title">{{hcm['name']}}
+                      <br>
+                      <small class="card-description text-muted">{{hcm['post']}}</small>
+                    </h4>
+                    <div class="card-footer justify-content-center">
+                      <a href="{{hcm['inprofile']}}" class="btn btn-link btn-just-icon" rel="tooltip" data-placement="bottom" data-original-title="{{hcm['inprofile']}}"><i class="fa fa-link"></i></a>
+                      <a href="{{hcm['fbprofile']}}" class="btn btn-link btn-just-icon" rel="tooltip" data-placement="bottom" data-original-title="{{hcm['fbprofile']}}"><i class="fa fa-facebook-square"></i></a>
+                      <a href="mailto:{{hcm['email']}}" class="btn btn-link btn-just-icon" rel="tooltip" data-placement="bottom" data-original-title="{{hcm.email}}"><span class="material-icons">alternate_email</span></a>
+                      {% if session.logged_in %}
+                        <a href="/edit_hcm_{{hcm['id']}}" class="btn btn-link btn-just-icon" rel="tooltip" data-placement="bottom" data-original-title="Edit Data"><span class="material-icons">edit</span></a>
+                        <a href="/delete_hcm_{{hcm['id']}}" class="btn btn-link btn-just-icon" rel="tooltip" data-placement="bottom" data-original-title="Delete Data"><span class="material-icons">delete_outline</span></a>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+            {% for hcm in hallcouncil_data if hcm.id > 5%}
               <div class="col-md-4">
                 <div class="team-player">
                   <div class="card card-plain">
@@ -140,8 +197,8 @@
                       <a href="{{hcm['fbprofile']}}" class="btn btn-link btn-just-icon" rel="tooltip" data-placement="bottom" data-original-title="{{hcm['fbprofile']}}"><i class="fa fa-facebook-square"></i></a>
                       <a href="mailto:{{hcm['email']}}" class="btn btn-link btn-just-icon" rel="tooltip" data-placement="bottom" data-original-title="{{hcm.email}}"><span class="material-icons">alternate_email</span></a>
                       {% if session.logged_in %}
-                        <a href="/edit_hcm_{{hcm['id']}}" class="btn btn-link btn-just-icon" rel="tooltip" data-placement="bottom" data-original-title="Edit Data"><span class="material-icons">edit</span></a>
-                        <a href="/delete_hcm_{{hcm['id']}}" class="btn btn-link btn-just-icon" rel="tooltip" data-placement="bottom" data-original-title="Delete Data"><span class="material-icons">delete_outline</span></a>
+                        <a href="/edit_cordi_secretaries_{{hcm['id']}}" class="btn btn-link btn-just-icon" rel="tooltip" data-placement="bottom" data-original-title="Edit Data"><span class="material-icons">edit</span></a>
+                        <a href="/delete_cordi_secretaries_{{hcm['id']}}" class="btn btn-link btn-just-icon" rel="tooltip" data-placement="bottom" data-original-title="Delete Data"><span class="material-icons">delete_outline</span></a>
                       {% endif %}
                     </div>
                   </div>
@@ -170,8 +227,8 @@
                       <a href="{{hcm['fbprofile']}}" class="btn btn-link btn-just-icon" rel="tooltip" data-placement="bottom" data-original-title="{{hcm['fbprofile']}}"><i class="fa fa-facebook-square"></i></a>
                       <a href="mailto:{{hcm['email']}}" class="btn btn-link btn-just-icon" rel="tooltip" data-placement="bottom" data-original-title="{{hcm.email}}"><span class="material-icons">alternate_email</span></a>
                       {% if session.logged_in %}
-                        <a href="/edit_hcm_{{hcm['id']}}" class="btn btn-link btn-just-icon" rel="tooltip" data-placement="bottom" data-original-title="Edit Data"><span class="material-icons">edit</span></a>
-                        <a href="/delete_hcm_{{hcm['id']}}" class="btn btn-link btn-just-icon" rel="tooltip" data-placement="bottom" data-original-title="Delete Data"><span class="material-icons">delete_outline</span></a>
+                        <a href="/edit_cordi_secretaries_{{hcm['id']}}" class="btn btn-link btn-just-icon" rel="tooltip" data-placement="bottom" data-original-title="Edit Data"><span class="material-icons">edit</span></a>
+                        <a href="/delete_cordi_secretaries_{{hcm['id']}}" class="btn btn-link btn-just-icon" rel="tooltip" data-placement="bottom" data-original-title="Delete Data"><span class="material-icons">delete_outline</span></a>
                       {% endif %}
                     </div>
                   </div>

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="page-header header-filter" data-parallax="true" style="background-image: url({{page_data.backgroungimage | safe}})">
+<div class="page-header header-filter" data-parallax="true" style="background-image: url({{ url_for('static', filename='assets/images/rk_main2.jpg') }}); background-position: top center;">
   <div class="container">
     <div class="row">
       <div class="col-md-10">
@@ -14,7 +14,7 @@
         {% endif %}
         {% if session.logged_in%}
           <a href="/edit_page/{{page_data.id}}" class="btn btn-white btn-raised btn-lg">
-            <i class="fa fa-edit"></i> Edit This Page Data
+            <i class="fa fa-edit"></i> Edit Page
           </a>
         {% endif %}
       </div>
@@ -26,54 +26,79 @@
     <div class="section text-center">
       <div class="row">
         <div class="col-md-8 ml-auto mr-auto">
-          <h2 class="title">{{page_data.title}}</</h2>
+          <h2 class="title">{{page_data.title}} </h2>
           <h4 class="text-justify">{{page_data.body | safe}}</h4>
         </div>
       </div>
     </div>
+    
     <div class="section text-center">
       <div class="row">
         <div class="col-md-8 ml-auto mr-auto">
-          <h2 class="title">INSIGHTS</h2>
+          <h2 class="title">INSIGHTS
+            {% if session.logged_in%}
+              <a href="/edit_insights/">
+                <i class="fa fa-edit"></i>
+              </a>
+            {% endif %}
+          </h2>
           <br>
           <div class="row">
               <div class="col s6 m3">
                   <i class="fa fa-futbol-o fa-2x" aria-hidden="true"></i>
-                  <p>8<br>Playgrounds</p>
+                  <p>{{insight_data.playground}}<br>Playgrounds</p>
               </div>
               <div class="col s6 m3">
                   <i class="fa fa-users fa-2x" aria-hidden="true"></i>
-                  <p>619<br>Happy Hall Members</p>
+                  <p>{{insight_data.hallmember}}<br>Happy Hall Members</p>
               </div>
               <div class="col s6 m3">
                   <i class="fa fa-building fa-2x" aria-hidden="true"></i>
-                  <p>424<br>Rooms</p>
+                  <p>{{insight_data.rooms}}<br>Rooms</p>
               </div>
               <div class="col s6 m3">
                   <i class="fa fa-coffee fa-2x" aria-hidden="true"></i>
-                  <p>11<br>Shops &#38; Canteens</p>
+                  <p>{{insight_data.shops}}<br>Shops &#38; Canteens</p>
               </div>
           </div>
           <br>
           <div class="row">
               <div class="col s6 m3">
                   <i class="fa fa-fire fa-2x" aria-hidden="true"></i>
-                  <p>15000<br>Illumination Diyas</p>
+                  <p>{{insight_data.illuminationdiyas}}<br>Illumination Diyas</p>
               </div>
               <div class="col s6 m3">
                   <i class="fa fa-trophy fa-2x" aria-hidden="true"></i>
-                  <p>22<br>Sports &#38; Games<br> General Championship</p>
+                  <p>{{insight_data.sportsgc}}<br>Sports &#38; Games<br> General Championship</p>
               </div>
               <div class="col s6 m3">
                   <i class="fa fa-shield fa-2x" aria-hidden="true"></i>
-                  <p>22<br>Social &#38; Cultural <br>General Championship</p>
+                  <p>{{insight_data.socultgc}}<br>Social &#38; Cultural <br>General Championship</p>
               </div>
               <div class="col s6 m3">
                   <i class="fa fa-lightbulb-o fa-2x" aria-hidden="true"></i>
-                  <p>10<br>Startups</p>
+                  <p>{{insight_data.startups}}<br>Startups</p>
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section text-center">
+      <div class="row">
+        <div class="col-md-8 ml-auto mr-auto">
+          <h2 class="title"> <ion-icon name="trophy-outline"></ion-icon>  Hall Awardees  <ion-icon name="trophy-outline"></ion-icon></h2>
+        </div>
+      </div>
+      <div class="features col-md-10 ml-auto mr-auto" >
+        <div class="row">
+          {% for award in hallawardee_data %}
+            <br>
+            <div class="col-md-4 text-left">
+              <a class="nav-link font-weight-bold text-dark" href="#{{award.award}}" data-toggle="modal">{{award.award}}</span></a>
+            </div>
+          {% endfor %}
         </div>
       </div>
     </div>
@@ -162,7 +187,51 @@
       </div>
     </div>
 
+
   </div>
 </div>
+
+{% for award in hallawardee_data %}
+<div class="modal fade" id="{{award.award}}" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header center">
+          <h4 class="text-strong"> <b>{{award.award}}</b></h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <i class="material-icons">clear</i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <table class="table">
+            <thead>
+              <tr>
+                  <th scope="col">Session</th>
+                  <th scope="col">Name</th>
+                  {% if session.logged_in %}
+                    <th scope="col">Edit</th>
+                  {% endif %}
+              </tr>
+            </thead>
+
+            <tbody>
+            {% for awardee in awardeelist if awardee.award == award.award %}
+              <tr>
+                <td scope="row">{{awardee.year}}-{{awardee.year+1}}</td>
+                <td>{{awardee.name}}</td>
+                {% if session.logged_in %}
+                    <td scope="col"><a href="/delete_awardee_{{awardee['id']}}" class="btn btn-link btn-just-icon"><span class="material-icons">delete_outline</span></a></td>
+                  {% endif %}
+              </tr>
+            {% endfor %}  
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger btn-link" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endfor %}
 
 {% endblock content %}

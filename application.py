@@ -9,8 +9,10 @@ from wtforms import Form, StringField, TextAreaField, PasswordField, validators,
 from wtforms.validators import DataRequired, Length, Email
 from functools import wraps
 from flask_ckeditor import CKEditorField
-from werkzeug.security import check_password_hash
+from werkzeug.security import generate_password_hash,check_password_hash
+from convertdrivelink import create_embed_link
 # import mysql.connector
+
 
 application = app = Flask(__name__)
 app.secret_key = 'AjaySuperJosaa@2016KgpRKjvhvhv ghjvgv hvj'
@@ -24,7 +26,7 @@ app.secret_key = 'AjaySuperJosaa@2016KgpRKjvhvhv ghjvgv hvj'
 # mysql = MySQL(cursorclass=DictCursor)
 # mysql.init_app(app)
 
-conn = psycopg2.connect(host="m", port="", user="", password="", database="", sslmode="")
+conn = psycopg2.connect(host="", port="", user="", password="", database="", sslmode="")
 conn.autocommit = True
 
 
@@ -59,11 +61,23 @@ def index():
 
     photos = cur.fetchall()
 
+    result = cur.execute("SELECT * FROM insights")
+
+    insight_data = cur.fetchone()
+
     result = cur.execute("SELECT * FROM pages WHERE id=4")
 
     page_data = cur.fetchone()
 
-    return render_template('home.html', photos=photos, page_data=page_data)
+    result = cur.execute("SELECT * FROM hallawardee order by id")
+
+    hallawardee_data = cur.fetchall()
+
+    result = cur.execute("SELECT * FROM awardeelist ORDER BY year")
+
+    awardeelist = cur.fetchall()
+
+    return render_template('home.html', photos=photos, page_data=page_data, insight_data=insight_data, hallawardee_data=hallawardee_data,awardeelist=awardeelist)
 
 @app.route('/illu')
 def illu():
@@ -98,8 +112,8 @@ def rangoli():
 
 class GCForm(Form):
     head = SelectField('Select Head', choices=[('Sports & Games', 'Sports & Games'),('Social & Cultural', 'Social & Cultural'),('Technology', 'Technology')])
-    subhead = StringField('Subhead')
-    event = StringField('Event')
+    subhead = StringField('Subhead', validators=[DataRequired()])
+    event = StringField('Event', validators=[DataRequired()])
     captain = StringField('Captain')
     vcaptain = StringField('Vice Captain')
     laststanding = SelectField ('Last Year Standing', choices=[('None', 'None'),('Gold', 'Gold'),('Silver', 'Silver'),('Bronze', 'Bronze')])
@@ -165,13 +179,11 @@ def hallcouncil():
     return render_template('hallcouncil.html', hallcouncil_data=hallcouncil_data, captains_secretaries_data=captains_secretaries_data)
 
 class LoginForm(Form):
-    username = StringField('Username', [validators.Length(min=1, max=50)])
+    username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', [
         validators.DataRequired(),
         validators.EqualTo('confirm', message='Passwords do not match')
     ])
-    confirm = PasswordField('Confirm Password')
-    remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
 
 
@@ -194,9 +206,6 @@ def login():
             return render_template('login.html', error=error)
 
         password = data['password']
-        print("\n")
-        print(password)
-        print("\n")
 
         # Compare Passwords
         if check_password_hash(password,password_candidate):
@@ -234,10 +243,71 @@ def logout():
     return redirect(url_for('index'))
 
 
+class INSIGHTSForm(Form):
+    playground = IntegerField('No. of Playgrounds:',validators=[DataRequired()])
+    hallmember = IntegerField('No. of Hall Members:',validators=[DataRequired()])
+    rooms = IntegerField('No. of Rooms:',validators=[DataRequired()])
+    shops = IntegerField('No. of Shops:',validators=[DataRequired()])
+    illuminationdiyas = IntegerField('No. of Illumination Diyas:',validators=[DataRequired()])
+    sportsgc = IntegerField('No. of Sports GC:',validators=[DataRequired()])
+    socultgc = IntegerField('No. of Socult GC:',validators=[DataRequired()])
+    startups = IntegerField('No. of Startups:',validators=[DataRequired()])
+    Submit = SubmitField('Submit')
+
+@app.route('/edit_insights/', methods=['GET','POST'])
+@is_logged_in
+def edit_insights():
+    # Create cursor
+    cur = conn.cursor(cursor_factory = psycopg2.extras.DictCursor)
+    #cur = con.cursor()
+
+    
+    result = cur.execute("SELECT * FROM insights WHERE id = 1")
+
+    insight_data = cur.fetchone()
+
+    form = INSIGHTSForm(request.form)
+
+    form.playground.data = insight_data['playground']
+    form.hallmember.data = insight_data['hallmember']
+    form.rooms.data = insight_data['rooms']
+    form.illuminationdiyas.data = insight_data['illuminationdiyas']
+    form.shops.data = insight_data['shops']
+    form.sportsgc.data = insight_data['sportsgc']
+    form.socultgc.data = insight_data['socultgc']
+    form.startups.data = insight_data['startups']
+
+    if request.method == 'POST':
+        playground=request.form['playground']
+        hallmember=request.form['hallmember']
+        rooms=request.form['rooms']
+        illuminationdiyas=request.form['illuminationdiyas']
+        shops=request.form['shops']
+        sportsgc=request.form['sportsgc']
+        socultgc=request.form['socultgc']
+        startups=request.form['startups']
+
+        # print(name + email)
+
+        cur = conn.cursor(cursor_factory = psycopg2.extras.DictCursor)
+        #cur = con.cursor()
+
+        # if warden_post != '':
+        #     cur.execute("UPDATE warden SET name=%s,profilephoto=%s,email=%s,fbprofile=%s,inprofile=%s where post=%s", (name,profilephoto,email,fbprofile,inprofile,warden_post));
+        #     conn.commit()
+        # else:
+        cur.execute("UPDATE insights SET playground=%s, hallmember=%s, illuminationdiyas=%s,shops=%s, rooms=%s, sportsgc=%s,socultgc=%s, startups=%s where id=1", (playground,hallmember,illuminationdiyas,shops,rooms,sportsgc,socultgc,startups));
+        conn.commit()
+        # cur.close()
+        return redirect(url_for('index'))
+
+    return render_template('edit_insights.html', form=form, insight_data=insight_data)
+
+
 class PageForm(Form):
-    title = StringField('Title')
+    title = StringField('Title', validators=[DataRequired()])
     body = CKEditorField('Body')
-    backgroungimage = StringField('Background Image Link: (Drive image link must be: https://drive.google.com/uc?export=view&id=XXX   where XXX is photo id)')
+    backgroungimage = StringField('Background Image Link: (Shareable Drive Photo Link or any other direct photo link)',validators=[DataRequired()])
     videolink = StringField('Youtube Video Link')
     videobuttontext = StringField ('Video Button Text:')
     Submit = SubmitField('Submit')
@@ -259,7 +329,7 @@ def edit_aboutsrk():
     form.title.data = srk_data['title']
     form.body.data = srk_data['aboutsrk']
 
-    if request.method == 'POST':
+    if request.method == 'POST' and form.validate_on_submit():
         title=request.form['title']
         body=request.form['body']
 
@@ -298,7 +368,7 @@ def edit_pages(id):
         title=request.form['title']
         videolink=request.form['videolink']
         videobuttontext=request.form['videobuttontext']
-        backgroungimage=request.form['backgroungimage']
+        backgroungimage=create_embed_link(request.form['backgroungimage'])
         body=request.form['body']
 
         cur = conn.cursor(cursor_factory = psycopg2.extras.DictCursor)
@@ -308,24 +378,24 @@ def edit_pages(id):
         conn.commit()
         # cur.close()
 
-        if id == 1:
+        if id == '1':
             return redirect(url_for('illu'))
-        if id == 2:
+        elif id == '2':
             return redirect(url_for('rangoli'))
-        if id == 3:
+        elif id == '3':
             return redirect(url_for('gc'))
-        if id == 4:
+        elif id == '4':
             return redirect(url_for('index'))
 
     return render_template('edit_pages.html', form=form)
 
 class HallCouncilForm(Form):
-    hcm_post = SelectField('hcm_Post', choices=[('HALL PRESIDENT', 'HALL PRESIDENT'), ('SECOND SENATE MEMBER', 'SECOND SENATE MEMBER'),('GENERAL SECRETARY Alumni Affairs','GENERAL SECRETARY Alumni Affairs'), ('GENERAL SECRETARY SOCIAL AND CULTURAL','GENERAL SECRETARY SOCIAL AND CULTURAL'), ('GENERAL SECRETARY SPORTS AND GAMES','GENERAL SECRETARY SPORTS AND GAMES'), ('GENERAL SECRETARY TECHNOLOGY','GENERAL SECRETARY TECHNOLOGY'), ('GENERAL SECRETARY MESS','GENERAL SECRETARY MESS'), ('GENERAL SECRETARY STUDENT WELFARE','GENERAL SECRETARY STUDENT WELFARE'),('WARDEN','WARDEN'),('ASS. WARDEN MAINTENENCE','ASS. WARDEN MAINTENENCE'),('ASS. WARDEN MESS','ASS. WARDEN MESS')])
+    hcm_post = SelectField('hcm_Post', choices=[('HALL PRESIDENT', 'HALL PRESIDENT'), ('SECOND SENATE MEMBER', 'SECOND SENATE MEMBER'),('GENERAL SECRETARY ALUMNI AFFAIRS','GENERAL SECRETARY ALUMNI AFFAIRS'),('GENERAL SECRETARY MAINTENENCE','GENERAL SECRETARY MAINTENENCE'), ('GENERAL SECRETARY SOCIAL AND CULTURAL','GENERAL SECRETARY SOCIAL AND CULTURAL'), ('GENERAL SECRETARY SPORTS AND GAMES','GENERAL SECRETARY SPORTS AND GAMES'), ('GENERAL SECRETARY TECHNOLOGY','GENERAL SECRETARY TECHNOLOGY'), ('GENERAL SECRETARY MESS','GENERAL SECRETARY MESS'), ('GENERAL SECRETARY STUDENT WELFARE','GENERAL SECRETARY STUDENT WELFARE'),('WARDEN','WARDEN'),('ASS. WARDEN MAINTENENCE','ASS. WARDEN MAINTENENCE'),('ASS. WARDEN MESS','ASS. WARDEN MESS')])
     other_post = SelectField('Select One', choices=[('SECRETARY','SECRETARY'),('CAPTAIN','CAPTAIN'),('VICE CAPTAIN','VICE CAPTAIN'),('COORDINATOR','COORDINATOR')])
     title = StringField('Title (ex- BASKETBALL, TECHNOLOGY)')
-    name = StringField('Name:', [validators.Length(min=1, max=200, message=('Link too long.'))])
+    name = StringField('Name:', validators=[DataRequired()])
     mobile = StringField('Mobile No')
-    profilephoto = StringField('Profilephoto (Drive image link must be: https://drive.google.com/uc?export=view&id=XXX   where XXX is photo id)')
+    profilephoto = StringField('Profilephoto (Shareable Drive Photo Link or any other direct photo link)',validators=[DataRequired()])
     email = StringField('Email')
     fbprofile = StringField('Fbprofile')
     inprofile = StringField('Website / Linkedin Profile Link')
@@ -336,12 +406,11 @@ class HallCouncilForm(Form):
 def add_hallcouncil():
     form = HallCouncilForm(request.form)
 
-    print (form.errors)
     if request.method == 'POST':
         hcm_post=request.form['hcm_post']
         name=request.form['name']
         mobile=request.form['mobile']
-        profilephoto=request.form['profilephoto']
+        profilephoto=create_embed_link(request.form['profilephoto'])
         email=request.form['email']
         fbprofile=request.form['fbprofile']
         inprofile=request.form['inprofile']
@@ -384,12 +453,11 @@ def edit_hcm(id):
     form.fbprofile.data = hcm_data['fbprofile']
     form.inprofile.data = hcm_data['inprofile']
 
-    print (form.errors)
     if request.method == 'POST':
         hcm_post=request.form['hcm_post']
         name=request.form['name']
         mobile=request.form['mobile']
-        profilephoto=request.form['profilephoto']
+        profilephoto=create_embed_link(request.form['profilephoto'])
         email=request.form['email']
         fbprofile=request.form['fbprofile']
         inprofile=request.form['inprofile']
@@ -429,18 +497,17 @@ def delete_hcm(id):
 
     return redirect(url_for('hallcouncil'))
 
-@app.route('/add_captains_secretaries/', methods=['GET','POST'])
+@app.route('/add_cordi_secretaries/', methods=['GET','POST'])
 @is_logged_in
-def add_captains_secretaries():
+def add_cordi_secretaries():
     form = HallCouncilForm(request.form)
 
-    print (form.errors)
     if request.method == 'POST':
         other_post=request.form['other_post']
         title=request.form['title']
         name=request.form['name']
         mobile=request.form['mobile']
-        profilephoto=request.form['profilephoto']
+        profilephoto=create_embed_link(request.form['profilephoto'])
         email=request.form['email']
         fbprofile=request.form['fbprofile']
         inprofile=request.form['inprofile']
@@ -456,13 +523,13 @@ def add_captains_secretaries():
         cur.execute("INSERT INTO captains_secretaries(post, title, name, profilephoto,email, mobile, fbprofile,inprofile) values(%s,%s,%s,%s,%s,%s,%s,%s)", (other_post,title,name,profilephoto,email,mobile,fbprofile,inprofile));
         conn.commit()
         # cur.close()
-        return redirect(url_for('captains_secretaries'))
+        return redirect(url_for('hallcouncil'))
 
-    return render_template('add_captains_secretaries.html', form=form)
+    return render_template('add_cordi_secretaries.html', form=form)
 
-@app.route('/edit_captains_secretaries_<string:id>', methods=['GET','POST'])
+@app.route('/edit_cordi_secretaries_<string:id>', methods=['GET','POST'])
 @is_logged_in
-def edit_captains_secretaries(id):
+def edit_cordi_secretaries(id):
     # Create cursor
     cur = conn.cursor(cursor_factory = psycopg2.extras.DictCursor)
 
@@ -482,13 +549,12 @@ def edit_captains_secretaries(id):
     form.fbprofile.data = captains_secretaries_data['fbprofile']
     form.inprofile.data = captains_secretaries_data['inprofile']
 
-    print (form.errors)
     if request.method == 'POST':
         other_post=request.form['other_post']
         title=request.form['title']
         name=request.form['name']
         mobile=request.form['mobile']
-        profilephoto=request.form['profilephoto']
+        profilephoto=create_embed_link(request.form['profilephoto'])
         email=request.form['email']
         fbprofile=request.form['fbprofile']
         inprofile=request.form['inprofile']
@@ -504,13 +570,13 @@ def edit_captains_secretaries(id):
         cur.execute("UPDATE captains_secretaries SET post=%s, title=%s, name=%s, profilephoto=%s,email=%s, mobile=%s, fbprofile=%s,inprofile=%s where id=%s", (other_post, title, name,profilephoto,email,mobile,fbprofile,inprofile,id));
         conn.commit()
         # cur.close()
-        return redirect(url_for('captains_secretaries'))
+        return redirect(url_for('hallcouncil'))
 
-    return render_template('edit_captains_secretaries.html', form=form, captains_secretaries_data=captains_secretaries_data)
+    return render_template('edit_cordi_secretaries.html', form=form, captains_secretaries_data=captains_secretaries_data)
 
-@app.route('/delete_captains_secretaries_<string:id>', methods=['GET','POST'])
+@app.route('/delete_cordi_secretaries_<string:id>', methods=['GET','POST'])
 @is_logged_in
-def delete_captains_secretaries(id):
+def delete_cordi_secretaries(id):
     # Create cursor
     cur = conn.cursor(cursor_factory = psycopg2.extras.DictCursor)
 
@@ -524,13 +590,13 @@ def delete_captains_secretaries(id):
 
     flash('Data Deleted', 'success')
 
-    return redirect(url_for('captains_secretaries'))
+    return redirect(url_for('hallcouncil'))
 
 class PhotoForm(Form):
     category = SelectField('Category of photo', choices=[('ILLUMINATION','ILLUMINATION'),('RANGOLI','RANGOLI'),('GENERAL CHAMPIONSHIP','GENERAL CHAMPIONSHIP'),('OTHER','OTHER')])
     title = StringField('Photo Title: ex- any themes, Gold')
-    photolink = StringField('Photolink (Drive image link must be: https://drive.google.com/uc?export=view&id=XXX   where XXX is photo id)')
-    year = IntegerField('Year (first year of session ex- for 2019-20 write 2019)')
+    photolink = StringField('Shareable Drive Photo Link or any other direct photo link',validators=[DataRequired()])
+    year = IntegerField('Year (first year of session ex- for 2019-20 write 2019)',validators=[DataRequired()])
 
 @app.route('/add_photos/', methods=['GET','POST'])
 @is_logged_in 
@@ -540,7 +606,7 @@ def add_photos():
     if request.method == 'POST':
         category=request.form['category']
         title=request.form['title']
-        photolink=request.form['photolink']
+        photolink= create_embed_link(request.form['photolink'])
         year=request.form['year']
 
         # print(name + email)
@@ -583,7 +649,6 @@ def delete_photo(id):
 def add_gc_event():
     form = GCForm(request.form)
 
-    print (form.errors)
     if request.method == 'POST':
         head=request.form['head']
         subhead=request.form['subhead']
@@ -627,7 +692,6 @@ def edit_gc_event(id):
     form.vcaptain.data = gc_event_data['vcaptain']
     form.laststanding.data = gc_event_data['laststanding']
 
-    print (form.errors)
     if request.method == 'POST':
         head=request.form['head']
         subhead=request.form['subhead']
@@ -671,4 +735,4 @@ def delete_gc_event(id):
 
 if __name__ == '__main__':
     app.config['SESSION_TYPE'] = 'filesystem'
-    app.run(debug=True, host='0.0.0.0', port='84')
+    app.run(debug=False, host='0.0.0.0', port='80')
