@@ -1,0 +1,288 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-header header-filter" data-parallax="true" style="background-image: url({{ url_for('static', filename='assets/images/AlumniMeet2018.jpg') }}); background-position: top center;">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-10">
+        <h1 class="title">ALUMNI CORNER</h1>
+        <br>
+        {% if session.logged_in%}
+          <a href="/edit_page/{{page_data.id}}" class="btn btn-white btn-raised btn-lg">
+            <i class="fa fa-edit"></i> Edit Page
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="main main-raised">
+  <div class="container">
+    
+    <div class="section text-center">
+      <div class="row">
+        <div class="col-md-8 ml-auto mr-auto">
+          <h2 class="title">{{page_data.title}}</h2>
+          <div class="text-left">{{page_data.body | safe}}</div>
+          <h4><a data-toggle="modal" data-target="#myModal">  <button type="button" class="btn btn-dark" >Connect to Our Alumni Network</button>
+          </a>
+          </h4>
+        </div>
+      </div>
+    </div>
+
+    <div class="section text-center">
+      <div class="row">
+        <div class="col-md-12 ml-auto mr-auto">
+          <h2 class="title">TRIP DOWN THE MEMORY LANE...</h2>
+          <br>
+          {% include 'gallery.html' %}
+          <h4 class="font-weight-bold text-dark" style="text-transform: uppercase;">If u want to share Ur golden stories and photos with rk family then mail us on  <br><a class="font-weight-bold text-dark" href="mailto:rkalumaffairs@gmail.com">
+              rkalumaffairs@gmail.com
+            </a></h4>
+        </div>
+      </div>
+    </div>
+
+    <div class="section text-center">
+      <h2 class="title">RECENT DEVELOPMENTS!</h2>
+      <br>
+      <div class="col-md-10 ml-auto mr-auto">
+        <div class="row">  
+          {% for article in RECENT_DEVELOPMENTS %}
+          <div class="col-md-6">
+            <div class="card mb-6 shadow-sm">
+              <a href="#"><img src="{{article.titleimage}}" class="img-raised rounded img-fluid" style="max-height:250px;"></a>
+              <div class="card-body">
+                <h5 class="text-left font-weight-bold text-dark"><a href="/article_{{article.id}}" class="text-dark">{{article.title}}</a></h5>
+                <p class="mb-4 text-left"><a href="/article_{{article.id}}" class="text-dark">{{article.description}}</a> <br>
+                <a href="/article/{{article.id}}" class="text-primary">View More</a></p>
+              </div>
+              {% if session.logged_in %}
+              <div class="d-flex align-items-center font-weight-bold">
+                <a href="/approve_article/{{article.id}}">  <button type="button" class="btn btn-dark" >Disapprove</button></a>
+                <a href="/delete_article_{{article.id}}">  <button type="button" class="btn btn-dark" >Delete</button></a>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <div class="section text-center">
+      <h2 class="title">FUTURE PROPOSALS!</h2>
+      <br>
+      <div class="col-md-10 ml-auto mr-auto">
+        <div class="row">  
+          {% for article in FUTURE_PROPOSALS %}
+          <div class="col-md-6">
+            <div class="card mb-6 shadow-sm">
+              <a href="#"><img src="{{article.titleimage}}" class="img-raised rounded img-fluid" style="max-height:250px;"></a>
+              <div class="card-body">
+                <h5 class="text-left font-weight-bold text-dark"><a href="/article_{{article.id}}" class="text-dark">{{article.title}}</a></h5>
+                <p class="mb-4 text-left"><a href="/article_{{article.id}}" class="text-dark">{{article.description}}</a> <br>
+                <a href="/article/{{article.id}}" class="text-primary">View More</a></p>
+              </div>
+              {% if session.logged_in %}
+              <div class="d-flex align-items-center font-weight-bold">
+                <a href="/approve_article/{{article.id}}">  <button type="button" class="btn btn-dark" >Disapprove</button></a>
+                <a href="/delete_article_{{article.id}}">  <button type="button" class="btn btn-dark" >Delete</button></a>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <div class="section text-center">
+      <h2 class="title">PLEDGE FORM!</h2>
+      <br>
+      <div class="col-md-10 ml-auto mr-auto">
+        <div class="row">  
+          <div class="col-md-12">
+            <br>
+            <br>
+            <h6>We are constantly working at making our hall better with new initiatives and targets every year. If you wish to contribute in any way to the hall, kindly fill up the pledge form and the Hall representatives will reach out to you.Thank you for all the contributions and we assure you, that all of it will be put to good use.</h6>
+          </div>
+          <div class="col-md-12">
+            <div class="card card-login">
+              <form class="form-group" method="POST" action="">
+                <div class="card-header text-center">
+                  <h4 class="card-title">PLEDGE FORM!</h4>
+                </div>
+                <div class="card-body">
+                  {% if error %}
+                    <p class="alert alert-danger text-center">
+                      {{error}}
+                    </p>
+                  {% endif %}
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">
+                            <i class="material-icons">face</i>
+                          </span>
+                        </div>
+                        <input type="text" name="name" class="form-control" placeholder="Name.." value="{{request.form.name}}" required>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">
+                            <i class="material-icons">phone</i>
+                          </span>
+                        </div>
+                        <input type="text" name="mobile" class="form-control" placeholder="Contact No..." value="{{request.form.mobile}}" required>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">
+                            <i class="material-icons">money</i>
+                          </span>
+                        </div>
+                        <input type="amount" name="amount" class="form-control" placeholder="Amount.." value="{{request.form.amount}}" required>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">
+                            <i class="material-icons">email</i>
+                          </span>
+                        </div>
+                        <input type="email" name="email" class="form-control" placeholder="Email.." value="{{request.form.email}}" required>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">
+                            <i class="material-icons">group</i>
+                          </span>
+                        </div>
+                        <input type="batchof" name="batchof" class="form-control" placeholder="Batch of.." value="{{request.form.batchof}}" required>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">
+                            <i class="material-icons">store</i>
+                          </span>
+                        </div>
+                        <input type="text" name="department" class="form-control" placeholder="Department.." value="{{request.form.department}}" required>
+                      </div>
+                    </div>
+                    <div class="col-md-10">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">
+                            <i class="material-icons">place</i>
+                          </span>
+                        </div>
+                        <input type="location" name="location" class="form-control" placeholder="Current Location.." value="{{request.form.location}}" required>
+                      </div>
+                    </div>
+                  </div>
+                  <center>
+                    <input class="btn btn-primary-outline" type="submit" value="Submit">
+                  </center>
+                  <br>
+                </div>
+              </form>
+            </div>
+        
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="card card-login">
+          <form class="form-group" method="POST" action="">
+            <div class="card-header text-center">
+              <h4 class="card-title">REGISTER HERE!</h4>
+            </div>
+            <div class="card-body">
+              {% if error %}
+                <p class="alert alert-danger text-center">
+                  {{error}}
+                </p>
+              {% endif %}
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="material-icons">face</i>
+                  </span>
+                </div>
+                <input type="text" name="name" class="form-control" placeholder="Name.." value="{{request.form.name}}" required>
+              </div>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="material-icons">mail</i>
+                  </span>
+                </div>
+                <input type="email" name="email" class="form-control" placeholder="Email..." value="{{request.form.email}}" required>
+              </div>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="material-icons">phone</i>
+                  </span>
+                </div>
+                <input type="text" name="mobile" class="form-control" placeholder="Mobile No.." value="{{request.form.mobile}}" required>
+              </div>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="material-icons">group</i>
+                  </span>
+                </div>
+                <input type="text" name="batchof" class="form-control" placeholder="Batch of.." value="{{request.form.batchof}}" required>
+              </div>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="material-icons">store</i>
+                  </span>
+                </div>
+                <input type="text" name="department" class="form-control" placeholder="Department.." value="{{request.form.department}}" required>
+              </div>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="material-icons">place</i>
+                  </span>
+                </div>
+                <input type="text" name="location" class="form-control" placeholder="Current Location.." value="{{request.form.location}}" required>
+              </div>
+              <center>
+                <input class="btn btn-primary-outline" type="submit" value="Submit">
+              </center>
+              <br>
+            </div>
+          </form>
+        </div>
+        <center>
+          <div class="card-footer text-center"><button type="button" class="btn btn-danger btn-link" data-dismiss="modal">Close</button>
+          </div>
+        </center>  
+      </div>
+    </div>
+  </div>
+{% endblock content %}

@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block content %}
+  <br>
+  <br>
+  <br>
+  <br>
+<center>
+  <h3 class="font-weight-bold text-dark" style="text-transform: uppercase;">If you are finding any dificulties in sharing your story, you can mail us on<br><a class="font-weight-bold text-dark" href="mailto:rkalumaffairs@gmail.com">
+    rkalumaffairs@gmail.com
+  </a></h3>
+  <br>
+<div class="col-md-10">
+  <div class="card card-login">
+    <form class="form-group" method="POST" action="">
+      <div class="card-header text-center">
+        <h4 class="card-title">Share your Story!</h4>
+      </div>
+      {% from "includes/_formhelpers.html" import render_field %}
+      <div class="card-body">
+        {% if error %}
+          <p class="alert alert-danger text-center">
+            {{error}}
+          </p>
+        {% endif %}
+        <div class="row">
+          {% if type == 'Story' %}
+          <div class="col-md-4">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="material-icons">face</i>
+                </span>
+              </div>
+              <input type="text" name="name" class="form-control" placeholder="Name.." value="{{request.form.name}}" required>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="material-icons">group</i>
+                </span>
+              </div>
+              <input type="batchof" name="batchof" class="form-control" placeholder="Batch of..." value="{{request.form.batchof}}" required>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="material-icons">schedule</i>
+                </span>
+              </div>
+              <input type="timetoread" name="timetoread" class="form-control" placeholder="Estimated time to read..." value="{{request.form.timetoread}}" required>
+            </div>
+          </div>
+          {% endif %}
+          <div class="col-md-6">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="material-icons">camera_alt</i>
+                </span>
+              </div>
+              <input type="titleimage" name="titleimage" class="form-control" placeholder="Card Title Image.." value="{{request.form.titleimage}}" required>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="material-icons">title</i>
+                </span>
+              </div>
+              <input type="title" name="title" class="form-control" placeholder="Card Title.." value="{{request.form.title}}" required>
+            </div>
+          </div>
+          <div class="col-md-10">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="material-icons">description</i>
+                </span>
+              </div>
+              <input type="description" name="description" class="form-control" placeholder="Card Description (Max. 150 Characters).. " maxlength="150" value="{{request.form.description}}" required>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="material-icons">description</i>
+                </span>
+              </div>
+              <div class="form-group" id="editor">
+                {{ render_field(form.body, class_="form-control") }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <center>
+          <input class="btn btn-primary-outline" type="submit" value="Submit">
+        </center>
+        <br>
+      </div>
+    </form>
+  </div>
+</div>
+</center>
+<br><br><br><br><br>
+  {% endblock content %}

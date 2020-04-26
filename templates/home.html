@@ -5,7 +5,8 @@
   <div class="container">
     <div class="row">
       <div class="col-md-10">
-        <h1 class="title">{{page_data.title}}</</h1>
+        <h1 class="title">RadhaKrishnan Hall Of Residence</h1>
+        <h4 class="title">A Great Place to learn and.... live</h4>
         <br>
         {% if page_data.videolink != '' %}
           <a href="{{page_data.videolink | safe}}" target="_blank" class="btn btn-danger btn-raised btn-lg">
@@ -25,16 +26,16 @@
   <div class="container">
     <div class="section text-center">
       <div class="row">
-        <div class="col-md-8 ml-auto mr-auto">
+        <div class="col-md-11 ml-auto mr-auto">
           <h2 class="title">{{page_data.title}} </h2>
-          <h4 class="text-justify">{{page_data.body | safe}}</h4>
+          <div class="text-justify text-dark">{{page_data.body | safe}}</div>
         </div>
       </div>
     </div>
     
     <div class="section text-center">
       <div class="row">
-        <div class="col-md-8 ml-auto mr-auto">
+        <div class="col-md-11 ml-auto mr-auto">
           <h2 class="title">INSIGHTS
             {% if session.logged_in%}
               <a href="/edit_insights/">
@@ -44,54 +45,52 @@
           </h2>
           <br>
           <div class="row">
-              <div class="col s6 m3">
-                  <i class="fa fa-futbol-o fa-2x" aria-hidden="true"></i>
-                  <p>{{insight_data.playground}}<br>Playgrounds</p>
-              </div>
-              <div class="col s6 m3">
-                  <i class="fa fa-users fa-2x" aria-hidden="true"></i>
-                  <p>{{insight_data.hallmember}}<br>Happy Hall Members</p>
-              </div>
-              <div class="col s6 m3">
-                  <i class="fa fa-building fa-2x" aria-hidden="true"></i>
-                  <p>{{insight_data.rooms}}<br>Rooms</p>
-              </div>
-              <div class="col s6 m3">
-                  <i class="fa fa-coffee fa-2x" aria-hidden="true"></i>
-                  <p>{{insight_data.shops}}<br>Shops &#38; Canteens</p>
-              </div>
+            <div class="col s6 m3">
+                <i class="fa fa-futbol-o fa-2x" aria-hidden="true"></i>
+                <p>{{insight_data.playground}}<br>Playgrounds</p>
+            </div>
+            <div class="col s6 m3">
+                <i class="fa fa-users fa-2x" aria-hidden="true"></i>
+                <p>{{insight_data.hallmember}}<br>Happy Hall Members</p>
+            </div>
+            <div class="col s6 m3">
+                <i class="fa fa-building fa-2x" aria-hidden="true"></i>
+                <p>{{insight_data.rooms}}<br>Rooms</p>
+            </div>
+            <div class="col s6 m3">
+                <i class="fa fa-coffee fa-2x" aria-hidden="true"></i>
+                <p>{{insight_data.shops}}<br>Shops &#38; Canteens</p>
+            </div>
           </div>
           <br>
           <div class="row">
-              <div class="col s6 m3">
-                  <i class="fa fa-fire fa-2x" aria-hidden="true"></i>
-                  <p>{{insight_data.illuminationdiyas}}<br>Illumination Diyas</p>
-              </div>
-              <div class="col s6 m3">
-                  <i class="fa fa-trophy fa-2x" aria-hidden="true"></i>
-                  <p>{{insight_data.sportsgc}}<br>Sports &#38; Games<br> General Championship</p>
-              </div>
-              <div class="col s6 m3">
-                  <i class="fa fa-shield fa-2x" aria-hidden="true"></i>
-                  <p>{{insight_data.socultgc}}<br>Social &#38; Cultural <br>General Championship</p>
-              </div>
-              <div class="col s6 m3">
-                  <i class="fa fa-lightbulb-o fa-2x" aria-hidden="true"></i>
-                  <p>{{insight_data.startups}}<br>Startups</p>
-              </div>
+            <div class="col s6 m3">
+                <i class="fa fa-fire fa-2x" aria-hidden="true"></i>
+                <p>{{insight_data.illuminationdiyas}}<br>Illumination Diyas</p>
+            </div>
+            <div class="col s6 m3">
+                <i class="fa fa-trophy fa-2x" aria-hidden="true"></i>
+                <p>{{insight_data.sportsgc}}<br>Sports &#38; Games<br> General Championship</p>
+            </div>
+            <div class="col s6 m3">
+                <i class="fa fa-shield fa-2x" aria-hidden="true"></i>
+                <p>{{insight_data.socultgc}}<br>Social &#38; Cultural <br>General Championship</p>
+            </div>
+            <div class="col s6 m3">
+                <i class="fa fa-lightbulb-o fa-2x" aria-hidden="true"></i>
+                <p>{{insight_data.startups}}<br>Startups</p>
             </div>
           </div>
         </div>
       </div>
     </div>
-
     <div class="section text-center">
       <div class="row">
         <div class="col-md-8 ml-auto mr-auto">
           <h2 class="title"> <ion-icon name="trophy-outline"></ion-icon>  Hall Awardees  <ion-icon name="trophy-outline"></ion-icon></h2>
         </div>
       </div>
-      <div class="features col-md-10 ml-auto mr-auto" >
+      <div class="features col-md-11 ml-auto mr-auto" >
         <div class="row">
           {% for award in hallawardee_data %}
             <br>
@@ -105,84 +104,50 @@
 
     <div class="section text-center">
       <div class="row">
-        <div class="col-md-10 ml-auto mr-auto">
-          <h2 class="title">GALLERY</h2>
+        <div class="col-md-12 ml-auto mr-auto">
+          <h2 class="title">LIFE AT RADHAKRISHNAN HALL OF RESIDENCE</h2>
           <br>
-          <!-- Carousel Card -->
-          <div class="card card-raised card-carousel">
-            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="3000"> 
-              {% set num = [0] %}
-              <ol class="carousel-indicators">
-                {% for photo in photos %}  
-                  {% if num[0] == 0 %}
-                    <li data-target="#carouselExampleIndicators" data-slide-to="{{num[0]}}" class="active"></li>
-                  {% else %}
-                    <li data-target="#carouselExampleIndicators" data-slide-to="{{num[0]}}"></li>
-                  {% endif %}
-                  {% if num.append(num.pop() + 1) %}{% endif %} {# increment num by 1 #}
-                {% endfor %}
-              </ol>
-              <div class="carousel-inner">
-                {% set count = [1] %}
-                {% for photo in photos %}  
-                  {% if count[0] == 1 %}
-                    <div class="carousel-item active">
-                      <img class="d-block w-100" src="{{photo.photolink}}" alt="{{photo.photolink}}" style="max-height: 700px ">
-                      <div class="carousel-caption d-none d-md-block">
-                        <h4>
-                          <i class="material-icons">location_on</i>
-                          RK Hall, IIT Kharagpur
-                        </h4>
-                        {% if photo.category != 'OTHER' %}
-                          <h4>
-                            {{photo.category}} {{photo.year}} : {{photo.title}}
-                          </h4>
-                        {% else %}
-                          <h4>
-                            {{photo.title}}
-                          </h4>
-                        {% endif %}
-                        {% if session.logged_in %}
-                          <a href="/delete_photo_{{photo.id}}" class="btn btn-link btn-just-icon" rel="tooltip" data-placement="bottom" data-original-title="Delete Photo"><span class="material-icons">delete_outline</span></a>
-                        {% endif %}
-                      </div>
-                    </div>
-                  {% else %}
-                    <div class="carousel-item">
-                      <img class="d-block w-100" src="{{photo.photolink}}" alt="{{photo.photolink}}" style="max-height: 700px ">
-                      <div class="carousel-caption d-none d-md-block">
-                        <h4>
-                          <i class="material-icons">location_on</i>
-                          RK Hall, IIT Kharagpur
-                        </h4>
-                        {% if photo.category != 'OTHER' %}
-                          <h4>
-                            {{photo.category}} {{photo.year}} : {{photo.title}}
-                          </h4>
-                        {% else %}
-                          <h4>
-                            {{photo.title}}
-                          </h4>
-                        {% endif %}
-                        {% if session.logged_in %}
-                          <a href="/delete_photo_{{photo.id}}" class="btn btn-link btn-just-icon" rel="tooltip" data-placement="bottom" data-original-title="Delete Photo"><span class="material-icons">delete_outline</span></a>
-                        {% endif %}
-                      </div>
-                    </div>
-                  {% endif %}
-                  {% if count.append(count.pop() + 1) %}{% endif %} {# increment count by 1 #}
-                {% endfor %}
+          {% include 'gallery.html' %}
+        </div>
+      </div>
+    </div>
+
+    <div class="section text-center">
+      <h2 class="title">CHRONICLES OF RK!</h2>
+      <h4><a href="/add_article/Story">  <button type="button" class="btn btn-dark" >Share your stories</button></a></h4>
+      <br>
+      <div class="col-md-10 ml-auto mr-auto">
+        <div class="row">
+          <div class="card-deck">
+        {% for article in articles %}
+          <div class="col-md-6">
+            <div class="card mb-6 shadow-sm">
+              <a href="/article/{{article.id}}" class="text-left text-dark"><img src="{{article.titleimage}}" class="img-raised rounded img-fluid" style="height:200px;"></a>
+              <div class="card-body">
+                <h5 class="text-left font-weight-bold text-dark"><a href="/article_{{article.id}}" class="text-dark">{{article.title}}</a></h5>
+                <div class="meta-wrap">
+                  <p class="text-muted font-weight-bold text-left">
+                    <span class="material-icons" style="font-size: 12px;">calendar_today</span> {{article.create_date.strftime("%d %b,%Y")}}   
+                    <span class="material-icons" style="font-size: 12px;">watch_later</span> {{article.timetoread}} mins
+                  </p>
+                </div>
+                <p class="mb-4 text-left"><a href="/article_{{article.id}}" class="text-dark">{{article.description}}</a> <br>
+                <a href="/article/{{article.id}}" class="text-primary">View More</a></p>
+                <div class="d-flex align-items-center font-weight-bold">
+                  <span class="material-icons" style="font-size: 20px;">face</span>  {{article.name}}<p class="text-white">---- </p>
+                  <span class="material-icons" style="font-size: 20px;">group</span>  Batch: {{article.batchof}}
+                </div>
+                {% if session.logged_in %}
+                <div class="d-flex align-items-center font-weight-bold">
+                  <a href="/approve_article/{{article.id}}">  <button type="button" class="btn btn-dark" >Disapprove</button></a>
+                  <a href="/delete_article_{{article.id}}">  <button type="button" class="btn btn-dark" >Delete</button></a>
+                </div>
+                {% endif %}
               </div>
-              <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                <i class="material-icons">keyboard_arrow_left</i>
-                <span class="sr-only">Previous</span>
-              </a>
-              <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                <i class="material-icons">keyboard_arrow_right</i>
-                <span class="sr-only">Next</span>
-              </a>
             </div>
           </div>
+        {% endfor %}
+        </div>
         </div>
       </div>
     </div>
@@ -193,45 +158,44 @@
 
 {% for award in hallawardee_data %}
 <div class="modal fade" id="{{award.award}}" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header center">
-          <h4 class="text-strong"> <b>{{award.award}}</b></h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <i class="material-icons">clear</i>
-          </button>
-        </div>
-        <div class="modal-body">
-          <table class="table">
-            <thead>
-              <tr>
-                  <th scope="col">Session</th>
-                  <th scope="col">Name</th>
-                  {% if session.logged_in %}
-                    <th scope="col">Edit</th>
-                  {% endif %}
-              </tr>
-            </thead>
-
-            <tbody>
-            {% for awardee in awardeelist if awardee.award == award.award %}
-              <tr>
-                <td scope="row">{{awardee.year}}-{{awardee.year+1}}</td>
-                <td>{{awardee.name}}</td>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header center">
+        <h4 class="text-strong" style="text-transform: uppercase;"> <b>{{award.award}}</b></h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="material-icons">clear</i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table class="table">
+          <thead>
+            <tr>
+                <th scope="col">Session</th>
+                <th scope="col">Name</th>
                 {% if session.logged_in %}
-                    <td scope="col"><a href="/delete_awardee_{{awardee['id']}}" class="btn btn-link btn-just-icon"><span class="material-icons">delete_outline</span></a></td>
-                  {% endif %}
-              </tr>
-            {% endfor %}  
-            </tbody>
-          </table>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger btn-link" data-dismiss="modal">Close</button>
-        </div>
+                  <th scope="col">Delete</th>
+                {% endif %}
+            </tr>
+          </thead>
+
+          <tbody>
+          {% for awardee in awardeelist if awardee.award == award.award %}
+            <tr>
+              <td scope="row">{{awardee.year}}-{{awardee.year+1}}</td>
+              <td style="text-transform: uppercase;">{{awardee.name}}</td>
+              {% if session.logged_in %}
+                  <td scope="col"><a href="/delete_awardee_{{awardee['id']}}" class="btn btn-link btn-just-icon"><span class="material-icons">delete_outline</span></a></td>
+                {% endif %}
+            </tr>
+          {% endfor %}  
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger btn-link" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
+</div>
 {% endfor %}
-
 {% endblock content %}

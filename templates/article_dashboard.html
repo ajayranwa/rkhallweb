@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/images/RK_logo.png') }}">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <title>
+    {% block title %}
+    RK Hall - IIT Kharagpur
+    {% endblock %}
+  </title>
+  <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
+  <!--     Fonts and icons     -->
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+  <!-- CSS Files -->
+  <link href="{{ url_for('static', filename='assets/css/material-kit.css') }}" rel="stylesheet" />
+  <!-- CSS Just for demo purpose, don't include it in your project -->
+  <link href="{{ url_for('static', filename='assets/demo/demo.css') }}" rel="stylesheet" />
+</head>
+<body class="profile-page sidebar-collapse">
+    {% include 'includes/_messages.html' %}
+    {% include 'includes/nav.html' %} {# pull in navbar #}
+    <div class="main main-raised">
+      <div class="container">
+        <div class="section text-center">
+          <h2 class="title">CHRONICLES OF RK!</h2>
+          <h4><a href="/add_article/Story">  <button type="button" class="btn btn-dark" >Share your stories</button></a></h4>
+          <br>
+          <div class="col-md-10 ml-auto mr-auto">
+            <div class="row">
+            {% for article in articles %}
+              <div class="col-md-6">
+                <div class="card mb-6 shadow-sm">
+                  <a href="#"><img src="{{article.titleimage}}" class="img-raised rounded img-fluid" style="max-height:250px;"></a>
+                  <div class="card-body">
+                    <h5 class="text-left font-weight-bold text-dark"><a href="/article_{{article.id}}" class="text-dark">{{article.title}}</a></h5>
+                    <div class="meta-wrap">
+                      <p class="text-muted font-weight-bold text-left">
+                        <span class="material-icons" style="font-size: 12px;">calendar_today</span> {{article.create_date.strftime("%d %b,%Y")}}   
+                        <span class="material-icons" style="font-size: 12px;">comment</span> 5 Comment
+                        <span class="material-icons" style="font-size: 12px;">watch_later</span> {{article.timetoread}} mins
+                      </p>
+                    </div>
+                    <p class="mb-4 text-left"><a href="/article_{{article.id}}" class="text-dark">{{article.description}}</a> <br>
+                    <a href="/article/{{article.id}}" class="text-primary">View More</a></p>
+                    <div class="d-flex align-items-center font-weight-bold">
+                      <span class="material-icons" style="font-size: 20px;">face</span>  {{article.name}}<p class="text-white">---- </p>
+                      <span class="material-icons" style="font-size: 20px;">group</span>  Batch: {{article.batchof}}
+                    </div>
+                    {% if session.logged_in %}
+                    <div class="d-flex align-items-center font-weight-bold">
+                      {% if article.is_approved == 'APPROVED' %}
+                      <a href="/disapprove_article/{{article.id}}">  <button type="button" class="btn btn-dark" >Disapprove</button></a>
+                      {% else %}
+                      <a href="/approve_article/{{article.id}}">  <button type="button" class="btn btn-dark" >Approve</button></a>
+                      {% endif %}
+                      <a href="/delete_article_{{article.id}}">  <button type="button" class="btn btn-dark" >Delete</button></a>
+                    </div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+    
+    {% include 'includes/script.html' %}
+</body>
+{% include 'includes/footer.html' %}
+</html>

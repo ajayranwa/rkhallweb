@@ -3,11 +3,13 @@
 
 <head>
   <meta charset="utf-8" />
-  <link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/images/rk_main2.png') }}">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/images/RK_logo.png') }}">
+  <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Abril+Fatface&display=swap" rel="stylesheet">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
-    {% block title %}
-    RK Hall - IIT Kharagpur
+    {% block title %} RK Hall IIT Kgp - A Great Place to learn and.... live
     {% endblock %}
   </title>
   <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
@@ -16,9 +18,51 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
   <!-- CSS Files -->
   <link href="{{ url_for('static', filename='assets/css/material-kit.css') }}" rel="stylesheet" />
-  <!-- CSS Just for demo purpose, don't include it in your project -->
-  <link href="{{ url_for('static', filename='assets/demo/demo.css') }}" rel="stylesheet" />
-  <script src="https://cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+  <script src="//cdn.ckeditor.com/4.14.0/full/ckeditor.js"></script>
+  <style>
+  .rangoli_container {
+    position: middle;
+    width: 100%;
+    /*height: 100%;*/
+  }
+
+  .rangoli_image {
+    opacity: 2;
+    display: block;
+    width: 100%;
+    /*height: 100%;*/
+    height: 200px;
+    transition: .5s ease;
+    backface-visibility: hidden;
+  }
+
+  .rangoli_middle {
+    transition: .5s ease;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    text-align: center;
+  }
+
+  .rangoli_container:hover .rangoli_image {
+    opacity: 0.3;
+  }
+
+  .rangoli_container:hover .rangoli_middle {
+    opacity: 1;
+  }
+
+  .rangoli_text {
+    background-color: #1aa3ff;
+    color: white;
+    font-size: 16px;
+    padding: 16px 32px;
+  }
+  
+  </style>
 </head>
 
 <body class="landing-page sidebar-collapse">

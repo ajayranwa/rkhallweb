@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/images/RK_logo.png') }}">
+  <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Abril+Fatface&display=swap" rel="stylesheet">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <title>
+    {% block title %}
+    RK Hall - IIT Kharagpur
+    {% endblock %}
+  </title>
+  <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
+  <!--     Fonts and icons     -->
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+  <!-- CSS Files -->
+  <link href="{{ url_for('static', filename='assets/css/material-kit.css') }}" rel="stylesheet" />
+</head>
+
+<body class="profile-page sidebar-collapse">
+  {% include 'includes/nav.html' %} {# pull in navbar #}
+  <div class="page-header header-filter" data-parallax="true" style="background-image: url({{ url_for('static', filename='assets/images/rk_main.jpg')}});"></div>
+  <div class="main main-raised">
+    <div class="profile-content col-md-10 ml-auto mr-auto">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-10 ml-auto mr-auto">
+            <div class="profile">
+              <div class="name">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="description text-center text-dark text-justify">
+          <h3 class="title">{{article['title']}}</h3>
+          {% if session.logged_in %}
+            <h4><a href="/edit_article/{{article.id}}">  <button type="button" class="btn btn-dark" >Edit This Article</button></a></h4>
+          {% endif %}
+          <h6 class="text-left">
+            <p class="text-muted font-weight-bold text-left">
+              <span class="material-icons" style="font-size: 12px;">calendar_today</span> {{article.create_date.strftime("%d %b,%Y")}}  
+              {% if article.type == 'Story' %} 
+              <span class="material-icons" style="font-size: 12px;">watch_later</span> {{article.timetoread}} mins
+              {% endif %}
+            </p>
+          </h6>
+          <br>
+          {{article.body | safe}}
+          <br>
+          {% if article.type == 'Story' %} 
+          <div class="d-flex align-items-center font-weight-bold">
+            <span class="material-icons" style="font-size: 20px;">face</span>  {{article.name}}<p class="text-white">---- </p>
+            <span class="material-icons" style="font-size: 20px;">group</span>  Batch: {{article.batchof}}
+          </div>
+          <br>
+          {% endif %}
+          <br>
+        </div>
+        <div class="description text-center text-dark text-justify ">
+          <h4 class="text-left font-weight-bold">
+            Comments...
+          </h4>
+          {% for comment in article_data %}
+          <div>
+            <div class="media text-left">
+              <div class="media-body">
+                <div class="font-weight-bold">
+                  {{article_data[comment]['name'][0]}} (Batch of {{article_data[comment].batchof[0]}})
+                  {% if session.logged_in %}
+                  <a href="/delete_comment_{{article_data[comment]['id'][0]}}" class="btn btn-link btn-just-icon" rel="tooltip" data-placement="bottom" data-original-title="Delete comment"><span class="material-icons">delete_outline</span></a>
+                  {% endif %}
+                </div>
+                {{article_data[comment].comment[0]}}
+                <!-- {% for reply in article_data[comment].replaies %}
+                <div class="media mt-3">
+                  <a class="mr-3" href="#">
+                    
+                  </a>
+                  <div class="media-body mr-9">
+                    <div class="font-weight-bold">{{reply.name}} (Batch of {{reply.batchof}})</div>
+                    {{reply.reply}}
+                  </div>
+                </div>
+                {% endfor %}
+                <div class="media">
+                  <a class="mr-3" href="#">
+                    
+                  </a>
+                  <form class="form-group" method="POST" action="">
+                    {% if error %}
+                      <p class="alert alert-danger text-center">
+                        {{error}}
+                      </p>
+                    {% endif %}
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">
+                              <i class="material-icons">reply</i>
+                            </span>
+                          </div>
+                          <textarea type="reply" name="reply" class="form-control" placeholder="Reply.." value="{{request.form.reply}}"></textarea>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">
+                              <i class="material-icons">face</i>
+                            </span>
+                          </div>
+                          <input type="name" class="form-control" placeholder="Name.." value="{{request.form.name}}">
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">
+                              <i class="material-icons">group</i>
+                            </span>
+                          </div>
+                          <input type="batchof" name="batchof" class="form-control" placeholder="Batch of.." value="{{request.form.batchof}}">
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <input class="btn btn-primary-outline" type="submit" value="Post Reply">
+                      </div>
+                    <br>
+                    </div>
+                  </form>
+                </div> -->
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+          <div>
+            <form class="form-group" method="POST" action="">
+              {% if error %}
+                <p class="alert alert-danger text-center">
+                  {{error}}
+                </p>
+              {% endif %}
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="material-icons">comment</i>
+                      </span>
+                    </div>
+                    <textarea type="text" name="comment" class="form-control" placeholder="Comment.." value="{{request.form.comment}}" required></textarea>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="material-icons">face</i>
+                      </span>
+                    </div>
+                    <input type="text" name="name" class="form-control" placeholder="Name.." value="{{request.form.name}}" required>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="material-icons">group</i>
+                      </span>
+                    </div>
+                    <input type="text" name="batchof" class="form-control" placeholder="Batch of.." value="{{request.form.batchof}}" required>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <input class="btn btn-primary-outline" type="submit" value="Post Comment">
+                </div>
+              <br>
+              </div>
+            </form>
+          </div>
+          <br>
+          <br>
+          <br>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% include 'includes/script.html' %}
+</body>
+{% include 'includes/footer.html' %}
+</html>
+</html>
